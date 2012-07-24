@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import android.util.Log;
+
 /**
  * @author colriot
  * @since Jul 9, 2012
@@ -197,18 +199,28 @@ public class QTNode {
                         buffer.add(child);
                     }
                 }
-                if (result.size() + queue.size() + buffer.size() > MAX_PARENT_NODES_COUNT) {
-                    result.add(node);
-                } else {
-                    queue.addAll(buffer);
-                }
-                buffer.clear();
             }
+            if (!queue.isEmpty()) {
+                continue;
+            }
+
+            if (range.getLngSpan() < node.boundBox.getLngSpan() && range.getLatSpan() < node.boundBox.getLatSpan()) {
+                queue.addAll(buffer);
+            } else {
+                result.addAll(buffer);
+            }
+            buffer.clear();
         }
 
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "search res for " + range + ":\n" + result);
+        }
         List<IGeoPoint> res = new ArrayList<IGeoPoint>();
         for (QTNode node : result) {
             res.addAll(node.getSuccessors(range));
+        }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "final res for " + range + ":\n" + result);
         }
 
         return res;
