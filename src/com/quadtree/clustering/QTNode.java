@@ -188,7 +188,7 @@ public class QTNode {
 
         queue.offer(this);
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && !Thread.currentThread().isInterrupted()) {
             QTNode node = queue.poll();
 
             if (node.children == null) {
