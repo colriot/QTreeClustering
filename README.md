@@ -1,4 +1,4 @@
-GMapsClustering
+Map Items Clustering
 ===============
 
-Quad-tree clustering for GMaps
+Quad-tree clustering of map items

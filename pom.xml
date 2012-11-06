@@ -3,46 +3,32 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>GMapsClustering</name>
+    <name>Map Items Clustering</name>
+
+    <groupId>com.github.colriot</groupId>
     <artifactId>quadtree-clustering</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <groupId>com.quadtree.clustering</groupId>
-    <packaging>apklib</packaging>
+
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <android.version>2.2_r3</android.version>
-        <android.platform>8</android.platform>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>android</groupId>
-            <artifactId>android</artifactId>
-            <version>${android.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>ida-repo-releases</id>
+            <name>iDa Mobile Repo - Releases</name>
+            <url>http://project.idamob.ru:8000/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ida-repo-snapshots</id>
+            <name>iDa Mobile Repo - Snapshots</name>
+            <url>http://project.idamob.ru:8000/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
-        <sourceDirectory>${project.basedir}/src</sourceDirectory>
-
-        <plugins>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-                <version>3.3.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <sdk>
-                        <platform>${android.platform}</platform>
-                    </sdk>
-                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    <lazyLibraryUnpack>true</lazyLibraryUnpack>
-                </configuration>
-            </plugin>
-        </plugins>
+        <sourceDirectory>src</sourceDirectory>
     </build>
-
 </project>
