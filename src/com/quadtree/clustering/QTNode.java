@@ -19,7 +19,7 @@ public class QTNode {
     public static final int DEFAULT_POINTS_COUNT_THRESHOLD = 6;
     private static final int MAX_PARENT_NODES_COUNT = 4;
 
-    private static final int MIN_COORD_SPAN = 5000000;
+    private static final int MIN_COORD_SPAN = 500;
 
     public static final GeoRect WHOLE_WORLD = new GeoRect(new GeoPointInternal(-180000000, -90000000),
             new GeoPointInternal(180000000, 90000000));
@@ -32,6 +32,7 @@ public class QTNode {
 
     private long avgX, avgY;
     private int count;
+    private GeoCluster cluster;
 
     private final int MAX_POINTS;
 
@@ -104,6 +105,8 @@ public class QTNode {
         avgY += p.getLat();
         count++;
 
+        updateCluster();
+
         if (children == null) {
             points.add(p);
             if (points.size() > MAX_POINTS) {
@@ -163,9 +166,10 @@ public class QTNode {
             avgY += p.getLat();
         }
         count = points.size();
-
-        if (points.size() > MAX_POINTS/* && boundBox.tR.x - boundBox.bL.x > MIN_COORD_SPAN
-                                      && boundBox.tR.y - boundBox.bL.y > MIN_COORD_SPAN*/) {
+        updateCluster();
+        if (points.size() > MAX_POINTS
+                && (boundBox.getLatSpan() > MIN_COORD_SPAN ||
+                    boundBox.getLngSpan() > MIN_COORD_SPAN)) {
             split();
         }
     }
@@ -252,8 +256,14 @@ public class QTNode {
     /**
      * @return cluster representation of current node
      */
-    private GeoCluster getCluster() {
-        return new GeoCluster((int) (avgX / count), (int) (avgY / count), count);
+    public GeoCluster getCluster() {
+        return cluster;
+    }
+
+    private void updateCluster() {
+        if (count > 0) {
+            this.cluster = new GeoCluster((int) (avgX / count), (int) (avgY / count), count);
+        }
 //        int cX = (boundBox.tR.x + boundBox.bL.x) / 2;
 //        int cY = (boundBox.tR.y + boundBox.bL.y) / 2;
 //        return new GeoCluster(cX, cY, count);
