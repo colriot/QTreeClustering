@@ -32,6 +32,7 @@ public class QTNode {
 
     private long avgX, avgY;
     private int count;
+
     private GeoCluster cluster;
 
     private final int MAX_POINTS;
@@ -166,6 +167,9 @@ public class QTNode {
             avgY += p.getLat();
         }
         count = points.size();
+
+        //if (points.size() > MAX_POINTS/* && boundBox.tR.x - boundBox.bL.x > MIN_COORD_SPAN
+        //                              && boundBox.tR.y - boundBox.bL.y > MIN_COORD_SPAN*/) {
         updateCluster();
         if (points.size() > MAX_POINTS
                 && (boundBox.getLatSpan() > MIN_COORD_SPAN ||
@@ -256,7 +260,7 @@ public class QTNode {
     /**
      * @return cluster representation of current node
      */
-    public GeoCluster getCluster() {
+    private GeoCluster getCluster() {
         return cluster;
     }
 
