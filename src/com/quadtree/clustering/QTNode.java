@@ -187,6 +187,42 @@ public class QTNode {
         return 0;
     }
 
+    public Collection<IGeoPoint> getNearestPoints(int maxCount, IGeoPoint where) {
+        Collection<IGeoPoint> result = new ArrayList<IGeoPoint>(maxCount);
+        QTNode node = findNodeWithNPoints(maxCount, where);
+        if (node != null) {
+            node.collectPoints(result);
+        }
+        return result;
+    }
+
+    private void collectPoints(Collection<IGeoPoint> out) {
+        out.addAll(points);
+        if (children != null) {
+            for (QTNode child : children) {
+                child.collectPoints(out);
+            }
+        }
+    }
+
+    private QTNode findNodeWithNPoints(int count, IGeoPoint point) {
+        if (children != null) {
+            for (int i = 0; i < children.length; i++) {
+                if (children[i].boundBox.contains(point)) {
+                    QTNode res = children[i];
+                    if (res.count > count) {
+                        QTNode subRes = res.findNodeWithNPoints(count, point);
+                        if (subRes != null) {
+                            res = subRes;
+                        }
+                    }
+                    return res;
+                }
+            }
+        }
+        return null;
+    }
+
     public Collection<? extends IGeoPoint> query(GeoRect range) {
         Queue<QTNode> queue = new LinkedList<QTNode>();
         List<QTNode> result = new ArrayList<QTNode>();
