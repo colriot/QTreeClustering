@@ -187,9 +187,9 @@ public class QTNode {
         return 0;
     }
 
-    public Collection<IGeoPoint> getNearestPoints(int maxCount, IGeoPoint where) {
-        Collection<IGeoPoint> result = new ArrayList<IGeoPoint>(maxCount);
-        QTNode node = findNodeWithNPoints(maxCount, where);
+    public Collection<IGeoPoint> getNearestPoints(int atLeast, IGeoPoint where) {
+        Collection<IGeoPoint> result = new ArrayList<IGeoPoint>(atLeast);
+        QTNode node = findNodeWithNPoints(atLeast, where);
         if (node != null) {
             node.collectPoints(result);
         }
@@ -197,7 +197,9 @@ public class QTNode {
     }
 
     private void collectPoints(Collection<IGeoPoint> out) {
-        out.addAll(points);
+        if (points != null) {
+            out.addAll(points);
+        }
         if (children != null) {
             for (QTNode child : children) {
                 child.collectPoints(out);
@@ -212,7 +214,7 @@ public class QTNode {
                     QTNode res = children[i];
                     if (res.count > count) {
                         QTNode subRes = res.findNodeWithNPoints(count, point);
-                        if (subRes != null) {
+                        if (subRes != null && subRes.count >= count) {
                             res = subRes;
                         }
                     }
