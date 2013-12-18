@@ -1,5 +1,7 @@
 package com.quadtree.clustering;
 
+import java.util.Collection;
+
 /**
  * Cluster of points representation
  * 
@@ -9,23 +11,27 @@ package com.quadtree.clustering;
  */
 public class GeoCluster extends GeoPointInternal {
 
-    private int size;
+    private Collection<IGeoPoint> points;
 
     /**
      * @param lng
      *            cluster longitude
      * @param lat
      *            cluster latitude
-     * @param size
-     *            number of objects in this cluster
+     * @param points
+     *            objects in this cluster
      */
-    public GeoCluster(int lng, int lat, int size) {
+    public GeoCluster(int lng, int lat, Collection<IGeoPoint> points) {
         super(lng, lat);
-        this.size = size;
+        this.points = points;
     }
 
     public int getSize() {
-        return size;
+        return points.size();
+    }
+
+    public Collection<IGeoPoint> getPoints() {
+        return points;
     }
 
     @Override

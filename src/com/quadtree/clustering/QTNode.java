@@ -1,10 +1,6 @@
 package com.quadtree.clustering;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @author colriot
@@ -304,7 +300,8 @@ public class QTNode {
 
     private void updateCluster() {
         if (count > 0) {
-            this.cluster = new GeoCluster((int) (avgX / count), (int) (avgY / count), count);
+            this.cluster = new GeoCluster((int) (avgX / count), (int) (avgY / count),
+                    Collections.unmodifiableCollection(points));
         }
 //        int cX = (boundBox.tR.x + boundBox.bL.x) / 2;
 //        int cY = (boundBox.tR.y + boundBox.bL.y) / 2;
